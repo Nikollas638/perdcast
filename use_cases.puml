@@ -1,0 +1,65 @@
+@startuml
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Usuario" as Usuario
+actor "Archivo (CSV/JSON)" as Archivo
+
+package "Aplicación PerdCast" {
+  (Listar animales) as UC_Listar
+  (Crear animal) as UC_Crear
+  (Editar animal) as UC_Editar
+  (Eliminar animal) as UC_Eliminar
+  (Registrar nacimiento) as UC_Nacimiento
+  (Registrar muerte) as UC_Muerte
+  (Registrar venta) as UC_Venta
+  (Registrar inseminación) as UC_Inseminacion
+  (Registrar palpación) as UC_Palpacion
+  (Ver historial de eventos) as UC_VerEventos
+  (Importar CSV/JSON) as UC_Importar
+  (Exportar CSV/JSON) as UC_Exportar
+  (Generar reportes) as UC_Reportes
+  (Actualizar etapas de vida) as UC_ActualizarEtapas
+  (Generar alertas) as UC_Alertas
+  (Persistir/Recuperar datos) as UC_Persistencia
+}
+
+' Relaciones actor - casos
+Usuario -- UC_Listar
+Usuario -- UC_Crear
+Usuario -- UC_Editar
+Usuario -- UC_Eliminar
+Usuario -- UC_Nacimiento
+Usuario -- UC_Muerte
+Usuario -- UC_Venta
+Usuario -- UC_Inseminacion
+Usuario -- UC_Palpacion
+Usuario -- UC_VerEventos
+Usuario -- UC_Importar
+Usuario -- UC_Exportar
+Usuario -- UC_Reportes
+
+Archivo -- UC_Importar
+Archivo -- UC_Exportar
+
+' Dependencias / includes
+UC_Importar .> UC_ActualizarEtapas : include
+UC_Nacimiento .> UC_ActualizarEtapas : include
+UC_Importar .> UC_Persistencia
+UC_Exportar .> UC_Persistencia
+UC_Crear .> UC_Persistencia
+UC_Eliminar .> UC_Persistencia
+UC_Editar .> UC_Persistencia
+
+' Opcional: agrupación técnica
+package "Eventos / Servicios" {
+  UC_Nacimiento
+  UC_Muerte
+  UC_Venta
+  UC_Inseminacion
+  UC_Palpacion
+  UC_VerEventos
+  UC_Alertas
+}
+
+@enduml
