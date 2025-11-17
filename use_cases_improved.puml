@@ -1,0 +1,69 @@
+@startuml
+' Diagrama de casos de uso mejorado (solo un actor: Usuario)
+left to right direction
+skinparam packageStyle rectangle
+skinparam usecase {
+  BackgroundColor #F9F9F9
+  BorderColor #333333
+  FontSize 12
+  RoundCorner 20
+}
+skinparam actorStyle awesome
+skinparam dpi 150
+skinparam shadowing false
+
+' Actor
+actor "Usuario" as Usuario
+
+' Paquetes/columnas para ordenar visualmente
+package "Gestión de animales" as G {
+  usecase "Listar animales" as UC_Listar
+  usecase "Crear animal" as UC_Crear
+  usecase "Editar animal" as UC_Editar
+  usecase "Eliminar animal" as UC_Eliminar
+  usecase "Generar reportes" as UC_Reportes
+  usecase "Persistir/Recuperar datos" as UC_Persistencia
+  usecase "Importar CSV/JSON" as UC_Importar
+  usecase "Exportar CSV/JSON" as UC_Exportar
+}
+
+package "Eventos y procesos" as E {
+  usecase "Registrar\nnacimiento" as UC_Nacimiento
+  usecase "Registrar\nmuerte" as UC_Muerte
+  usecase "Registrar\nventa" as UC_Venta
+  usecase "Registrar\ninseminación" as UC_Inseminacion
+  usecase "Registrar\npalpación" as UC_Palpacion
+  usecase "Ver historial\nde eventos" as UC_VerEventos
+  usecase "Actualizar etapas\nde vida" as UC_ActualizarEtapas
+  usecase "Generar alertas" as UC_Alertas
+}
+
+' Conexiones actor - casos (Usuario único)
+Usuario -- UC_Listar
+Usuario -- UC_Crear
+Usuario -- UC_Editar
+Usuario -- UC_Eliminar
+Usuario -- UC_Reportes
+Usuario -- UC_VerEventos
+
+Usuario -- UC_Nacimiento
+Usuario -- UC_Muerte
+Usuario -- UC_Venta
+Usuario -- UC_Inseminacion
+Usuario -- UC_Palpacion
+
+' Import/Export por el mismo Usuario
+Usuario -- UC_Importar
+Usuario -- UC_Exportar
+
+' Dependencias / includes
+UC_Importar .> UC_ActualizarEtapas : include
+UC_Nacimiento .> UC_ActualizarEtapas : include
+
+UC_Importar .> UC_Persistencia
+UC_Exportar .> UC_Persistencia
+UC_Crear .> UC_Persistencia
+UC_Eliminar .> UC_Persistencia
+UC_Editar .> UC_Persistencia
+
+@enduml
